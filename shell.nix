@@ -6,6 +6,7 @@ with pkgs; let
     flask-bcrypt
     flask-jwt-extended
     flask-marshmallow
+    marshmallow-sqlalchemy
     flask-sqlalchemy
     gunicorn
   ]);

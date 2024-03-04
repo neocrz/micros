@@ -5,7 +5,7 @@ class Client(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     address = db.Column(db.String(length=128), nullable=True, unique=False) # Endereço
     address_num = db.Column(db.String(length=16), nullable=True, unique=False) # número
-    business_name =  db.Column(db.String(length=128), nullable=False, unique=True) # razão social
+    business_name =  db.Column(db.String(length=128), nullable=True, unique=False) # razão social
     trade_name = db.Column(db.String(length=128), nullable=False, unique=True) # nome fantasia
 
 class ClientSchema(ma.Schema):
