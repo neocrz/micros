@@ -16,5 +16,5 @@ bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
-
-
+from app.models import *
+from app.routes import *

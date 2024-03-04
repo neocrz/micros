@@ -9,8 +9,10 @@ with pkgs; let
     gunicorn
   ]);
 in mkShell {
-  buildInputs = [
+  buildInputs = with pkgs; [
     pythonpkgs
+    sqlitebrowser
+    postman
     # metabase
   ];
 }
