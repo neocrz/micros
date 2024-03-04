@@ -6,12 +6,12 @@ An experimental 'Service Order' (Ordem de Serviço) API made with Flask.
 
 ## How to
 ### Nix Flake (nix develop)
-- Download the repo.
+- Clone the repo.
 - `cd` to the repo directory.
 - `nix develop .`
 
 ### No nix
-- Download the repo.
+- Clone the repo.
 - `cd` to the repo directory.
 - Create a new python venv
 ```console
@@ -24,9 +24,8 @@ python -m venv venv
 ```
 
 - Install the dependencies
-
 ```
-
+pip install -r requirements.txt
 ```
 
 ## Todo
