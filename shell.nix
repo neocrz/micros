@@ -5,14 +5,15 @@ with pkgs; let
     flask
     flask-bcrypt
     flask-jwt-extended
+    flask-marshmallow
     flask-sqlalchemy
     gunicorn
   ]);
 in mkShell {
   buildInputs = with pkgs; [
     pythonpkgs
-    sqlitebrowser
     postman
+    sqlitebrowser
     # metabase
   ];
 }
