@@ -13,8 +13,8 @@ with pkgs; let
 in mkShell {
   buildInputs = with pkgs; [
     pythonpkgs
-    postman
-    sqlitebrowser
+    # postman
+    # sqlitebrowser
     # metabase
   ];
 }
