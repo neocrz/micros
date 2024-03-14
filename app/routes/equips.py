@@ -5,26 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 client_schema = ClientSchema()
 clients_schema = ClientSchema(many=True)
-client_fields = ("id",
-                  "address",
-                  "address_num",
-                  "business_name",
-                  "city",
-                  "client_type",
-                  "cnpj",
-                  "contact_name",
-                  "cpf",
-                  "email",
-                  "ie",
-                  "im",
-                  "phone1",
-                  "phone2",
-                  "phone3",
-                  "rg",
-                  "state",
-                  "trade_name",
-                  "zip_code"
-                  )
+
 @app.route("/clients", methods=["POST"])
 @jwt_required()
 def add_client():
@@ -41,21 +22,7 @@ def add_client():
                 address=data.get("address"),
                 address_num = data.get("address_num"),
                 business_name = data.get("business_name"),
-                city = data.get("city"),
-                client_type = data.get("client_type"),
-                cnpj = data.get("cnpj"),
-                contact_name = data.get("contact_name"),
-                cpf = data.get("cpf"),
-                email = data.get("email"),
-                ie = data.get("ie"),
-                im = data.get("im"),
-                phone1 = data.get("phone1"),
-                phone2 = data.get("phone2"),
-                phone3 = data.get("phone3"),
-                rg = data.get("rg"),
-                state = data.get("state"),
-                trade_name = data.get("trade_name"),
-                zip_code = data.get("zip_code")
+                trade_name = data.get("trade_name")
                 )
         db.session.add(new_client)
         db.session.commit()
@@ -89,9 +56,15 @@ def update_client(id):
     data = request.get_json(force=True)
     if not data:
         return jsonify({"error": "No client data provided"}), 400
-    for field in client_fields:
-        f = data.get(field)
-        if f : setattr(client, field, f)
+    
+    address = data.get("address")
+    if address : client.address = address
+    address_num = data.get("address_num")
+    if address_num : client.address_num = address_num
+    business_name = data.get("business_name")
+    if business_name : client.business_name = business_name
+    trade_name = data.get("trade_name")
+    if trade_name : client.trade_name = trade_name
 
     db.session.commit()
     return jsonify(client_schema.dump(client)), 200

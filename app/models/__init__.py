@@ -3,10 +3,25 @@ from app import db, bcrypt, ma
 class Client(db.Model):
     __tablename__ = "clients"
     id = db.Column(db.Integer(), primary_key=True)
-    address = db.Column(db.String(length=128), nullable=True, unique=False) # Endereço
-    address_num = db.Column(db.String(length=16), nullable=True, unique=False) # número
+    address = db.Column(db.String(length=128), nullable=True, unique=False)
+    address_num = db.Column(db.String(length=16), nullable=True, unique=False)
     business_name =  db.Column(db.String(length=128), nullable=True, unique=False) # razão social
+    city = db.Column(db.String(length=128), nullable=True,  unique=False)
+    client_type = db.Column(db.String(length=32), nullable=True, unique=False, default="F") # J - jurídico F-físico
+    cnpj = db.Column(db.String(length=32), nullable=True, unique=False)
+    contact_name = db.Column(db.String(length=128), nullable=True, unique=False)
+    cpf = db.Column(db.String(length=32), nullable=True, unique=False)
+    email = db.Column(db.String(length=128), nullable=True, unique=False)
+    ie = db.Column(db.String(length=32), nullable=True, unique=False) # inscrição estadual
+    im = db.Column(db.String(length=32), nullable=True, unique=False) # inscrição municipal
+    orders = db.relationship("Order", backref="client")
+    phone1 = db.Column(db.String(length=32), nullable=True, unique=False)
+    phone2 = db.Column(db.String(length=32), nullable=True, unique=False)
+    phone3 = db.Column(db.String(length=32), nullable=True, unique=False)
+    rg = db.Column(db.String(length=32), nullable=True, unique=False)
+    state = db.Column(db.String(length=128), nullable=True, unique=False)
     trade_name = db.Column(db.String(length=128), nullable=False, unique=True) # nome fantasia
+    zip_code = db.Column(db.String(length=32), nullable=True, unique=False)
 
 class ClientSchema(ma.Schema):
     class Meta:
@@ -14,7 +29,21 @@ class ClientSchema(ma.Schema):
                   "address",
                   "address_num",
                   "business_name",
+                  "city",
+                  "client_type",
+                  "cnpj",
+                  "contact_name",
+                  "cpf",
+                  "email",
+                  "ie",
+                  "im",
+                  "phone1",
+                  "phone2",
+                  "phone3",
+                  "rg",
+                  "state",
                   "trade_name",
+                  "zip_code"
                   )
 
 class Equip(db.Model):
@@ -29,7 +58,16 @@ class Equip(db.Model):
 
     def __repr__(self):
         return f"<Equip {self.name}>"
- 
+
+class EquipSchema(ma.Schema):
+    class Meta:
+        fields = ("id",
+                  "name",
+                  "model",
+                  "brand",
+                  "sn",
+                  )
+
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer(), primary_key=True)
