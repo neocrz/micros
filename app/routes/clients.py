@@ -1,30 +1,11 @@
 from app import app, db
-from app.models import Client, ClientSchema
+from app.models import Client, ClientSchema, client_fields
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 client_schema = ClientSchema()
 clients_schema = ClientSchema(many=True)
-client_fields = ("id",
-                  "address",
-                  "address_num",
-                  "business_name",
-                  "city",
-                  "client_type",
-                  "cnpj",
-                  "contact_name",
-                  "cpf",
-                  "email",
-                  "ie",
-                  "im",
-                  "phone1",
-                  "phone2",
-                  "phone3",
-                  "rg",
-                  "state",
-                  "trade_name",
-                  "zip_code"
-                  )
+
 @app.route("/clients", methods=["POST"])
 @jwt_required()
 def add_client():
@@ -37,26 +18,11 @@ def add_client():
         return jsonify({"error": "No client 'trade_name' provided"}), 400
 
     try:
-        new_client = Client(
-                address=data.get("address"),
-                address_num = data.get("address_num"),
-                business_name = data.get("business_name"),
-                city = data.get("city"),
-                client_type = data.get("client_type"),
-                cnpj = data.get("cnpj"),
-                contact_name = data.get("contact_name"),
-                cpf = data.get("cpf"),
-                email = data.get("email"),
-                ie = data.get("ie"),
-                im = data.get("im"),
-                phone1 = data.get("phone1"),
-                phone2 = data.get("phone2"),
-                phone3 = data.get("phone3"),
-                rg = data.get("rg"),
-                state = data.get("state"),
-                trade_name = data.get("trade_name"),
-                zip_code = data.get("zip_code")
-                )
+        client_data = {}
+        for field in client_fields:
+            client_data[field] = data.get(field)
+
+        new_client = Client(**client_data)
         db.session.add(new_client)
         db.session.commit()
 

@@ -1,4 +1,5 @@
 from app import db, bcrypt, ma
+client_fields = ("id", "address", "address_num", "business_name", "city", "client_type", "cnpj", "contact_name", "cpf", "email", "ie", "im", "phone1", "phone2", "phone3", "rg", "state", "trade_name", "zip_code")
 
 class Client(db.Model):
     __tablename__ = "clients"
@@ -25,26 +26,7 @@ class Client(db.Model):
 
 class ClientSchema(ma.Schema):
     class Meta:
-        fields = ("id",
-                  "address",
-                  "address_num",
-                  "business_name",
-                  "city",
-                  "client_type",
-                  "cnpj",
-                  "contact_name",
-                  "cpf",
-                  "email",
-                  "ie",
-                  "im",
-                  "phone1",
-                  "phone2",
-                  "phone3",
-                  "rg",
-                  "state",
-                  "trade_name",
-                  "zip_code"
-                  )
+        fields = client_fields
 
 class Equip(db.Model):
     __tablename__ = "equipments"
