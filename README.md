@@ -42,13 +42,16 @@ There is no routes for creating a Role and User. Remember to create via python b
     - [x] API Auth System (by User login)
 - [ ] Client
     - [x] Basic Client Model
-    - [x] Basic CRUD System
+    - [x] Base CRUD
 - [ ] Equipments
     - [x] Basic Equipment Model
-    - [x] Basic CRUD System
+    - [x] Base CRUD
+- [ ] Orders
+    - [x] Basic Order Model
+    - [ ] Base CRUD
 - [ ] Supplier
     - [ ] Basic Supplier Model
-    - [ ] Basic CRUD
+    - [ ] Base CRUD
 - [ ] Make a unique db model for Client, Host, Supplier commons
 
 
