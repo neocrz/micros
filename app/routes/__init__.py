@@ -18,4 +18,5 @@ def login():
     access_token = create_access_token(identity=username)
     return jsonify({"access_token": access_token}), 200
 
-from . import clients 
+from . import clients
+from . import equips

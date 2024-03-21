@@ -1,81 +1,74 @@
 from app import app, db
-from app.models import Client, ClientSchema
+from app.models import Equip, EquipSchema, equip_fields
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-client_schema = ClientSchema()
-clients_schema = ClientSchema(many=True)
+equip_schema = EquipSchema()
+equips_schema = EquipSchema(many=True)
 
-@app.route("/clients", methods=["POST"])
+@app.route("/equips", methods=["POST"])
 @jwt_required()
-def add_client():
+def add_equip():
     data = request.get_json(force=True)
     if not data:
-        return jsonify({"error": "No client data provided"}), 400
+        return jsonify({"error": "No equipment data provided"}), 400
     
-    trade_name = data.get("trade_name")
-    if not trade_name:
-        return jsonify({"error": "No client 'trade_name' provided"}), 400
+    name = data.get("name")
+    if not name:
+        return jsonify({"error": "No equipment 'name' provided"}), 400
 
     try:
-        new_client = Client(
-                address=data.get("address"),
-                address_num = data.get("address_num"),
-                business_name = data.get("business_name"),
-                trade_name = data.get("trade_name")
-                )
-        db.session.add(new_client)
+        equip_data = {}
+        for field in equip_fields:
+            equip_data[field] = data.get(field)
+
+        new_equip = Equip(**equip_data)
+        db.session.add(new_equip)
         db.session.commit()
 
     except Exception as E:
         return jsonify({"error": E}), 400
 
-    return jsonify({"data": client_schema.dump(new_client)}), 201
+    return jsonify({"data": equip_schema.dump(new_equip)}), 201
 
-@app.route("/clients", methods=["GET"])
+@app.route("/equips", methods=["GET"])
 @jwt_required()
-def get_clients():
-    clients = Client.query.all()
-    return jsonify(clients_schema.dump(clients)), 200
+def get_equips():
+    equips = Equip.query.all()
+    return jsonify(equips_schema.dump(equips)), 200
 
-@app.route('/clients/<int:id>', methods=['GET'])
+@app.route('/equips/<int:id>', methods=['GET'])
 @jwt_required()
-def get_client(id):
-    client = Client.query.get(id)
-    if not client:
-        return jsonify({"error" : "Client not found."}), 404
-    return jsonify(client_schema.dump(client)), 200
+def get_equip(id):
+    equip = Equip.query.get(id)
+    if not equip:
+        return jsonify({"error" : "Equip not found."}), 404
+    return jsonify(equip_schema.dump(equip)), 200
 
-@app.route('/clients/<int:id>', methods=['PUT'])
+@app.route('/equips/<int:id>', methods=['PUT'])
 @jwt_required()
-def update_client(id):
-    client = Client.query.get(id)
-    if not client:
-        return jsonify({"error" : "Client not found."}), 404
+def update_equip(id):
+    equip = Equip.query.get(id)
+    if not equip:
+        return jsonify({"error" : "Equip not found."}), 404
     
     data = request.get_json(force=True)
     if not data:
-        return jsonify({"error": "No client data provided"}), 400
-    
-    address = data.get("address")
-    if address : client.address = address
-    address_num = data.get("address_num")
-    if address_num : client.address_num = address_num
-    business_name = data.get("business_name")
-    if business_name : client.business_name = business_name
-    trade_name = data.get("trade_name")
-    if trade_name : client.trade_name = trade_name
+        return jsonify({"error": "No equip data provided"}), 400
+    for field in equip_fields:
+        f = data.get(field)
+        if f : setattr(equip, field, f)
 
     db.session.commit()
-    return jsonify(client_schema.dump(client)), 200
+    return jsonify(equip_schema.dump(equip)), 200
 
-@app.route('/clients/<int:id>', methods=['DELETE'])
+@app.route('/equips/<int:id>', methods=['DELETE'])
 @jwt_required()
-def delete_client(id):
-    client = Client.query.get(id)
-    if not client:
-        return jsonify({"error" : "Client not found."}), 404
+def delete_equip(id):
+    equip = Equip.query.get(id)
+    if not equip:
+        return jsonify({"error" : "Equip not found."}), 404
 
-    db.session.delete(client)
+    db.session.delete(equip)
     db.session.commit()
-    return jsonify({"message" : "Client deleted"}), 200
+    return jsonify({"message" : "Equip deleted"}), 200

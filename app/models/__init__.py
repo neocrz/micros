@@ -1,6 +1,9 @@
 from app import db, bcrypt, ma
 client_fields = ("id", "address", "address_num", "business_name", "city", "client_type", "cnpj", "contact_name", "cpf", "email", "ie", "im", "phone1", "phone2", "phone3", "rg", "state", "trade_name", "zip_code")
 
+equip_fields = ("id", "brand", "model", "name", "pn", "sn")
+
+
 class Client(db.Model):
     __tablename__ = "clients"
     id = db.Column(db.Integer(), primary_key=True)
@@ -32,23 +35,19 @@ class Equip(db.Model):
     __tablename__ = "equipments"
 
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(length=128), nullable=False, unique=True)
-    model = db.Column(db.String(length=128), nullable=True, unique=False)
     brand = db.Column(db.String(length=128), nullable=True, unique=False)
-    sn = db.Column(db.String(length=64), nullable=True, unique=False)
     orders = db.relationship("Order", backref="equip")
+    model = db.Column(db.String(length=128), nullable=True, unique=False)
+    name = db.Column(db.String(length=128), nullable=False, unique=True)
+    pn = db.Column(db.String(length=64), nullable=True, unique=False)
+    sn = db.Column(db.String(length=64), nullable=True, unique=False)
 
     def __repr__(self):
         return f"<Equip {self.name}>"
 
 class EquipSchema(ma.Schema):
     class Meta:
-        fields = ("id",
-                  "name",
-                  "model",
-                  "brand",
-                  "sn",
-                  )
+        fields = equip_fields
 
 class Order(db.Model):
     __tablename__ = 'orders'
